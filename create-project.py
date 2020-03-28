@@ -2,6 +2,7 @@ from pprint import pprint
 
 from googleapiclient import discovery
 from oauth2client.client import GoogleCredentials
+import os
 
 credentials = GoogleCredentials.get_application_default()
 
@@ -20,3 +21,7 @@ except:
   !sleep 2
   response = service.projects().get(projectId=project_id).execute()
 pprint( response )
+
+os.environ['DEVSHELL_PROJECT_ID'] = project_id
+os.environ['PROJECT'] = project_id
+
