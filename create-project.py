@@ -10,7 +10,7 @@ credentials = GoogleCredentials.get_application_default()
 service = discovery.build('cloudresourcemanager', 'v1', credentials=credentials)
 
 project_body = {
-    "projectId": project_id,
+  "projectId": project_id,
   "name": project_id,
 }
 
