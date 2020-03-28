@@ -1,3 +1,4 @@
+# Please make sure "project_id" is defined with a globally unique name before executing this cell
 from pprint import pprint
 
 from googleapiclient import discovery
