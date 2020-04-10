@@ -24,7 +24,7 @@ def prj_setup( project_id='prj_id' ):
         print(set_prj)
 
     elif "ERROR" in billing:
-        print("You need to authenticate with GCP first.\n")
+        print("You need to authenticate with GCP first. Do not proceed until login is done.\n")
 
     elif "Listed 0 items." in billing:
         print("The GCP environment is a sandbox or lab environment. Project creation is not needed.\n")
