@@ -8,16 +8,20 @@ def prj_setup( project_id='prj_id' ):
 
     from googleapiclient import discovery
     from oauth2client.client import GoogleCredentials
-    import os
+    from subprocess import PIPE, Popen
 
     ret_msg = 'Failed'       # return message set to failed before processing
 
-    response = os.popen("gcloud config set project {}".format(project_id)).read()
+    stdout, stderr = Popen("gcloud config set project {}".format(project_id),
+                           shell=True, stdout=PIPE, stderr=PIPE).communicate()
+    set_prj = (stderr + stdout).decode(encoding="utf-8")
     # Check whether the user has authenticated with GCP
-    billing = os.popen("gcloud alpha billing accounts list").read()
+    stdout, stderr = Popen("gcloud alpha billing accounts list",
+                           shell=True, stdout=PIPE, stderr=PIPE).communicate()
+    billing = (stderr + stdout).decode(encoding="utf-8")
 
-    if "WARNING" in response:
-        print(response)
+    if "WARNING" in set_prj:
+        print(set_prj)
 
     elif "ERROR" in billing:
         print("You need to authenticate with GCP first.\n")
@@ -45,7 +49,7 @@ def prj_setup( project_id='prj_id' ):
             else:
                 response = service.projects().get(projectId=project_id).execute()
                 print("Project creation completed.\n")
-                os.popen("sleep 2")
+                Popen("sleep 2", shell=True).communicate()
                 ret_msg = 'Created'
 
         else:
