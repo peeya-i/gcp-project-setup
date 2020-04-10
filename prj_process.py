@@ -9,12 +9,18 @@ def prj_setup( project_id='prj_id' ):
     from googleapiclient import discovery
     from oauth2client.client import GoogleCredentials
     from subprocess import PIPE, Popen
+    import os
+
+    # Set environment variables for the project
+    os.environ['DEVSHELL_PROJECT_ID'] = project_id
+    os.environ['PROJECT'] = project_id
 
     ret_msg = 'Failed'       # return message set to failed before processing
 
     stdout, stderr = Popen("gcloud config set project {}".format(project_id),
                            shell=True, stdout=PIPE, stderr=PIPE).communicate()
     set_prj = (stderr + stdout).decode(encoding="utf-8")
+
     # Check whether the user has authenticated with GCP
     stdout, stderr = Popen("gcloud alpha billing accounts list",
                            shell=True, stdout=PIPE, stderr=PIPE).communicate()
@@ -31,9 +37,6 @@ def prj_setup( project_id='prj_id' ):
         ret_msg = 'Sandbox'
 
     else:
-        os.environ['DEVSHELL_PROJECT_ID'] = project_id
-        os.environ['PROJECT'] = project_id
-
         credentials = GoogleCredentials.get_application_default()
         service = discovery.build('cloudresourcemanager', 'v1', credentials=credentials)
 
