@@ -1,4 +1,8 @@
 # Check and create project as needed. Return the status of the project
+# Failed => Fail to setup project
+# Sandbox => The environment is a sandbox project creation is not needed
+# Created => Project was created
+# Existing => Existing project that will require resources removal at the end
 def prj_setup( project_id='prj_id' ):
     from pprint import pprint
 
