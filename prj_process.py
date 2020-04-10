@@ -45,7 +45,7 @@ def prj_setup( project_id='prj_id' ):
             else:
                 response = service.projects().get(projectId=project_id).execute()
                 print("Project creation completed.\n")
-                !sleep 2
+                os.popen("sleep 2")
                 ret_msg = 'Created'
 
         else:
