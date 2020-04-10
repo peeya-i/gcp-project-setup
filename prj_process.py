@@ -10,19 +10,19 @@ def prj_setup( project_id='prj_id' ):
     from oauth2client.client import GoogleCredentials
     import os
 
-    ret_msg = 'Failed'       # return message if the project was not 
-    response = !gcloud config set project {project_id}
-    
-    # Check whether the user has authenticated with GCP
-    billing = !gcloud alpha billing accounts list
-    
-    if "WARNING" in response[-1]:
-        print(response[-1])
+    ret_msg = 'Failed'       # return message set to failed before processing
 
-    elif "ERROR" in billing[0]:
+    response = os.popen("gcloud config set project {}".format(project_id)).read()
+    # Check whether the user has authenticated with GCP
+    billing = os.popen("gcloud alpha billing accounts list").read()
+
+    if "WARNING" in response:
+        print(response)
+
+    elif "ERROR" in billing:
         print("You need to authenticate with GCP first.\n")
 
-    elif "Listed 0 items." in billing[0]:
+    elif "Listed 0 items." in billing:
         print("The GCP environment is a sandbox or lab environment. Project creation is not needed.\n")
         ret_msg = 'Sandbox'
 
@@ -37,12 +37,13 @@ def prj_setup( project_id='prj_id' ):
         try: response = service.projects().get(projectId=project_id).execute()
         except:
             try: response = service.projects().create(
-                body= { "projectId": project_id,
-                        "name": project_id }).execute()
+                               body= { "projectId": project_id,
+                                       "name": project_id }).execute()
                 # The wait allows the creation to propagate through before proceeding to the next step
             except:
                 print("Failed to create project. Please check the 'project_id' to make sure it is unique.\n")
             else:
+                response = service.projects().get(projectId=project_id).execute()
                 print("Project creation completed.\n")
                 !sleep 2
                 ret_msg = 'Created'
@@ -59,4 +60,3 @@ def get_utc():
     from datetime import datetime
 
     return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")
-
