@@ -2,14 +2,21 @@ def get_prj_res( fname ):
     import json
     from subprocess import PIPE, Popen
 
-    !gcloud services enable cloudresourcemanager.googleapis.com
-    !gcloud alpha resources list --format=json > {fname}
-
     # Enables the cloud resource manager API
     stdout, stderr = Popen("gcloud services enable cloudresourcemanager.googleapis.com",
                            shell=True, stdout=PIPE, stderr=PIPE).communicate()
-    if sterr != "
-    en_crm = (stderr + stdout).decode(encoding="utf-8")
+    msg = (stderr + stdout).decode(encoding="utf-8")
+    if ("ERROR" in msg):
+        print( "Error Msg1: ", msg)
+        return msg
+
+    # Enables the cloud resource manager API
+    stdout, stderr = Popen("gcloud alpha resources list --format=json > {}".format(fname),
+                           shell=True, stdout=PIPE, stderr=PIPE).communicate()
+    msg = (stderr + stdout).decode(encoding="utf-8")
+    if ("ERROR" in msg):
+        print( "Error Msg2: ", msg)
+        return msg
 
     # Test loading the JSON contents from the file
     with open( fname ) as file:
