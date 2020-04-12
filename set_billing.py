@@ -1,4 +1,4 @@
-def set_billing(bac_id, project_id)
+def set_billing(bac_id, project_id):
     from googleapiclient import discovery
     from subprocess import PIPE, Popen
     import os
