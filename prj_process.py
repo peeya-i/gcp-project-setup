@@ -3,14 +3,13 @@
 # Sandbox => The environment is a sandbox project creation is not needed
 # Created => Project was created
 # Existing => Existing project that will require resources removal at the end
+from googleapiclient import discovery
+from oauth2client.client import GoogleCredentials
+from subprocess import PIPE, Popen
+import os
+from pprint import pprint
+
 def prj_setup( project_id='prj_id' ):
-    from pprint import pprint
-
-    from googleapiclient import discovery
-    from oauth2client.client import GoogleCredentials
-    from subprocess import PIPE, Popen
-    import os
-
     # Set environment variables for the project
     os.environ['DEVSHELL_PROJECT_ID'] = project_id
     os.environ['PROJECT'] = project_id
@@ -62,8 +61,7 @@ def prj_setup( project_id='prj_id' ):
 
     return ret_msg
 
+from datetime import datetime
 # Get the UTC time in the format used by 'gcloud alpha resources
 def get_utc():
-    from datetime import datetime
-
     return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")
