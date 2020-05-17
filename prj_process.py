@@ -16,19 +16,20 @@ def prj_setup( project_id='prj_id' ):
 
     ret_msg = 'Failed'       # return message set to failed before processing
 
-    stdout, stderr = Popen("gcloud config set project {}".format(project_id),
-                           shell=True, stdout=PIPE, stderr=PIPE).communicate()
-    set_prj = (stderr + stdout).decode(encoding="utf-8")
+#    stdout, stderr = Popen("gcloud config set project {}".format(project_id),
+#                           shell=True, stdout=PIPE, stderr=PIPE).communicate()
+#    set_prj = (stderr + stdout).decode(encoding="utf-8")
 
     # Check whether the user has authenticated with GCP
     stdout, stderr = Popen("gcloud alpha billing accounts list",
                            shell=True, stdout=PIPE, stderr=PIPE).communicate()
     billing = (stderr + stdout).decode(encoding="utf-8")
 
-    if "WARNING" in set_prj:
-        print(set_prj)
+#    if "WARNING" in set_prj:
+#        print(set_prj)
 
-    elif "ERROR" in billing:
+#    elif "ERROR" in billing:
+    if "ERROR" in billing:
         print("You need to authenticate with GCP first. Do not proceed until login is done.\n")
 
     elif "Listed 0 items." in billing:
